@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KALA FIGHTWARE | Official Store</title>
+    
+    <!-- Tailwind CSS untuk Styling Cepat -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Oswald untuk Heading (tegas), Inter untuk Body (bersih) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons untuk Icon UI -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Konfigurasi Tailwind Kustom -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Oswald', 'sans-serif'],
+                    },
+                    colors: {
+                        kala: {
+                            black: '#111111',
+                            gray: '#f5f5f5',
+                            darkgray: '#777777'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* --- Kustom CSS & Efek Animasi --- */
+        
+        body {
+            background-color: #ffffff;
+            color: #111111;
+            /* Menyembunyikan kursor bawaan untuk diganti dengan kursor JS */
+            cursor: none; 
+            overflow-x: hidden;
+        }
+
+        /* Hanya sembunyikan kursor di desktop */
+        @media (max-width: 768px) {
+            body { cursor: auto; }
+            .custom-cursor { display: none !important; }
+        }
+
+        /* Gaya Kursor Kustom */
+        .custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+            mix-blend-mode: difference; /* Membuat kursor kontras dengan background */
+            background-color: white;
+        }
+
+        .custom-cursor.hovering {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 1px solid white;
+            backdrop-filter: blur(2px);
+        }
+
+        /* Animasi Marquee (Teks Berjalan) */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            display: flex;
+        }
+        .marquee-content {
+            display: flex;
+            animation: marquee 20s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Efek Scroll Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Efek Hover Gambar Produk */
+        .product-card .img-hover {
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .product-card:hover .img-hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-black selection:text-white">
+
+    <!-- Elemen Kursor Kustom -->
+    <div class="custom-cursor" id="cursor"></div>
+
+    <!-- Header / Navigasi -->
+    <header id="header" class="fixed w-full top-0 z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-transparent">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden interactive">
+                <i class="ph ph-list text-2xl"></i>
+            </button>
+
+            <!-- Logo -->
+            <a href="#" class="interactive flex items-center">
+                <!-- Gambar Logo dengan efek mix-blend untuk menghilangkan background putih bawaan logo -->
+                <img src="kala1.png" alt="KALA FIGHTWARE Logo" class="h-10 md:h-12 w-auto mix-blend-multiply transition-transform hover:scale-105" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <!-- Fallback teks jika gambar gagal dimuat -->
+                <span class="hidden font-heading text-2xl font-bold tracking-tighter uppercase">Kala<span class="font-normal text-kala-darkgray">Fightware</span></span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex gap-8 font-semibold text-sm uppercase tracking-wide">
+                <a href="#shop" class="hover:text-gray-500 transition-colors interactive">Shop</a>
+                <a href="#collections" class="hover:text-gray-500 transition-colors interactive">Collections</a>
+                <a href="#about" class="hover:text-gray-500 transition-colors interactive">About</a>
+            </nav>
+
+            <!-- Icons -->
+            <div class="flex gap-4 items-center">
+                <button class="interactive hover:text-gray-500 transition-colors"><i class="ph ph-magnifying-glass text-xl"></i></button>
+                <button class="interactive hover:text-gray-500 transition-colors"><i class="ph ph-user text-xl"></i></button>
+                <button class="interactive hover:text-gray-500 transition-colors relative">
+                    <i class="ph ph-shopping-bag text-xl"></i>
+                    <span class="absolute -top-1 -right-2 bg-black text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">2</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-20">
+        
+        <!-- Hero Section -->
+        <section class="relative w-full h-[85vh] bg-kala-gray flex items-center justify-center overflow-hidden">
+            <!-- Background Image (Placeholder Tema Bela Diri/Streetwear) -->
+            <img src="hero.png" alt="Hero KALA" class="absolute inset-0 w-full h-full object-cover opacity-90 object-top">
+            
+            <div class="relative z-10 text-center text-white mix-blend-difference px-4">
+                <h1 class="font-heading text-6xl md:text-8xl font-bold uppercase tracking-tighter mb-4 reveal">
+                    Dominate<br>The Arena
+                </h1>
+                <p class="text-lg md:text-xl font-light mb-8 max-w-md mx-auto reveal" style="transition-delay: 0.2s;">
+                    Peralatan tempur premium untuk mereka yang tidak pernah mundur. Didesain untuk performa, diciptakan untuk gaya.
+                </p>
+                <a href="#shop" class="inline-block bg-white text-black font-heading uppercase font-bold py-4 px-10 hover:bg-black hover:text-white transition-colors border border-transparent hover:border-white reveal interactive" style="transition-delay: 0.4s;">
+                    Shop New Arrival
+                </a>
+            </div>
+        </section>
+
+        <!-- Marquee Ticker -->
+        <div class="bg-black text-white py-3 border-y border-gray-800">
+            <div class="marquee-container font-heading uppercase tracking-widest text-sm">
+                <div class="marquee-content">
+                    <!-- Tulisan diulang agar efek infinite mulus -->
+                    <span class="mx-8">Free Shipping Orders Over Rp 500.000</span> •
+                    <span class="mx-8">New Rashguard Collection Drop</span> •
+                    <span class="mx-8">Authentic Fightwear</span> •
+                    <span class="mx-8">Free Shipping Orders Over Rp 500.000</span> •
+                    <span class="mx-8">New Rashguard Collection Drop</span> •
+                    <span class="mx-8">Authentic Fightwear</span> •
+                     <span class="mx-8">Free Shipping Orders Over Rp 500.000</span> •
+                    <span class="mx-8">New Rashguard Collection Drop</span> •
+                    <span class="mx-8">Authentic Fightwear</span> •
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Products Section -->
+        <section id="shop" class="py-24 max-w-7xl mx-auto px-6">
+            <div class="flex justify-between items-end mb-12 reveal">
+                <h2 class="font-heading text-4xl uppercase font-bold tracking-tight">Latest Drop</h2>
+                <a href="#" class="text-sm border-b border-black pb-1 hover:text-gray-500 hover:border-gray-500 transition-colors uppercase font-semibold interactive">View All</a>
+            </div>
+
+            <!-- Grid Produk -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <!-- Product 1 -->
+                <div class="product-card group cursor-pointer reveal interactive">
+                    <div class="relative bg-kala-gray aspect-[3/4] mb-4 overflow-hidden">
+                        <!-- Main Image -->
+                        <img src="https://images.unsplash.com/photo-1581655353564-df123a1eb820?q=80&w=1974&auto=format&fit=crop" alt="Rashguard" class="w-full h-full object-cover">
+                        <!-- Hover Image -->
+                        <img src="https://images.unsplash.com/photo-1504198458649-3128b932f49e?q=80&w=1974&auto=format&fit=crop" alt="Rashguard Detail" class="img-hover">
+                        <!-- Badge -->
+                        <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-bold uppercase px-2 py-1">New</div>
+                        <!-- Quick Add Button -->
+                        <div class="absolute bottom-0 left-0 w-full transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                            <button class="w-full bg-black text-white font-heading uppercase py-3 text-sm hover:bg-gray-800 transition-colors">Quick Add</button>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-sm uppercase">Onyx Competition Rashguard</h3>
+                        <p class="text-gray-500 text-sm mt-1">Rp 450.000</p>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card group cursor-pointer reveal interactive" style="transition-delay: 0.1s;">
+                    <div class="relative bg-kala-gray aspect-[3/4] mb-4 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1591557301726-1e6702e07173?q=80&w=1969&auto=format&fit=crop" alt="Fight Shorts" class="w-full h-full object-cover">
+                        <img src="https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?q=80&w=1972&auto=format&fit=crop" alt="Fight Shorts Detail" class="img-hover">
+                        <div class="absolute bottom-0 left-0 w-full transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                            <button class="w-full bg-black text-white font-heading uppercase py-3 text-sm hover:bg-gray-800 transition-colors">Quick Add</button>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-sm uppercase">Stealth Grappling Shorts</h3>
+                        <p class="text-gray-500 text-sm mt-1">Rp 380.000</p>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card group cursor-pointer reveal interactive" style="transition-delay: 0.2s;">
+                    <div class="relative bg-kala-gray aspect-[3/4] mb-4 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=2080&auto=format&fit=crop" alt="T-Shirt" class="w-full h-full object-cover">
+                        <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=1974&auto=format&fit=crop" alt="T-Shirt Detail" class="img-hover">
+                        <div class="absolute bottom-0 left-0 w-full transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                            <button class="w-full bg-black text-white font-heading uppercase py-3 text-sm hover:bg-gray-800 transition-colors">Quick Add</button>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-sm uppercase">Heavyweight Box Tee</h3>
+                        <p class="text-gray-500 text-sm mt-1">Rp 250.000</p>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card group cursor-pointer reveal interactive" style="transition-delay: 0.3s;">
+                    <div class="relative bg-kala-gray aspect-[3/4] mb-4 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=1965&auto=format&fit=crop" alt="Hoodie" class="w-full h-full object-cover">
+                        <img src="https://images.unsplash.com/photo-1614975059251-992f11792b9f?q=80&w=1974&auto=format&fit=crop" alt="Hoodie Detail" class="img-hover">
+                        <div class="absolute bottom-0 left-0 w-full transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                            <button class="w-full bg-black text-white font-heading uppercase py-3 text-sm hover:bg-gray-800 transition-colors">Quick Add</button>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-sm uppercase">Warmup Zip Hoodie</h3>
+                        <p class="text-gray-500 text-sm mt-1">Rp 550.000</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brand Ethos Section -->
+        <section id="about" class="py-24 bg-kala-black text-white">
+            <div class="max-w-4xl mx-auto px-6 text-center reveal">
+                <i class="ph-fill ph-sword text-5xl mb-6 mx-auto text-gray-500"></i>
+                <h2 class="font-heading text-3xl md:text-5xl uppercase tracking-tighter mb-8 leading-tight">
+                    "Kala" berarti waktu dan seni. <br>
+                    Di atas matras, hanya dua hal itu yang penting.
+                </h2>
+                <p class="text-gray-400 font-light text-lg md:text-xl leading-relaxed">
+                    Kami memadukan estetika jalanan dengan fungsionalitas olahraga pertarungan tingkat tinggi. Setiap jahitan, bahan, dan potongan dirancang untuk bertahan dalam latihan terberat Anda, tanpa mengorbankan identitas gaya Anda di luar arena.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 bg-white pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            
+            <div class="col-span-1 md:col-span-2">
+                <h3 class="font-heading text-2xl font-bold uppercase mb-6">Kala Fightware</h3>
+                <p class="text-gray-500 text-sm max-w-sm mb-6">
+                    Join our newsletter for exclusive drops, early access, and fightwear culture.
+                </p>
+                <form class="flex border-b border-black pb-2 max-w-sm">
+                    <input type="email" placeholder="Email Address" class="w-full outline-none text-sm bg-transparent interactive">
+                    <button type="submit" class="font-heading uppercase text-sm font-bold interactive">Subscribe</button>
+                </form>
+            </div>
+
+            <div>
+                <h4 class="font-bold uppercase text-sm mb-6 tracking-wide">Support</h4>
+                <ul class="space-y-3 text-gray-500 text-sm">
+                    <li><a href="#" class="hover:text-black transition-colors interactive">FAQ</a></li>
+                    <li><a href="#" class="hover:text-black transition-colors interactive">Shipping & Returns</a></li>
+                    <li><a href="#" class="hover:text-black transition-colors interactive">Size Guide</a></li>
+                    <li><a href="#" class="hover:text-black transition-colors interactive">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold uppercase text-sm mb-6 tracking-wide">Legal</h4>
+                <ul class="space-y-3 text-gray-500 text-sm">
+                    <li><a href="#" class="hover:text-black transition-colors interactive">Terms of Service</a></li>
+                    <li><a href="#" class="hover:text-black transition-colors interactive">Privacy Policy</a></li>
+                </ul>
+                <div class="flex gap-4 mt-8">
+                    <a href="#" class="text-xl hover:text-gray-500 interactive"><i class="ph-fill ph-instagram-logo"></i></a>
+                    <a href="#" class="text-xl hover:text-gray-500 interactive"><i class="ph-fill ph-tiktok-logo"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400">
+            <p>
+                &copy; 2026 KALA FIGHTWARE. All Rights Reserved
+                <!-- INI ADALAH TRIGGER HALAMAN TERSEMBUNYI -->
+                <a href="authenticity.html" id="secret-trigger" class="cursor-pointer text-transparent select-none ml-1 inline-block w-2 h-2 rounded-full bg-transparent hover:bg-gray-200 transition-colors" title="Verify Authenticity">.</a>
+            </p>
+            <p class="mt-4 md:mt-0 font-heading tracking-widest uppercase">Designed in Indonesia</p>
+        </div>
+    </footer>
+
+    <!-- Script Utama -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Custom Cursor Logic
+            const cursor = document.getElementById('cursor');
+            const interactiveElements = document.querySelectorAll('.interactive, a, button, input');
+
+            // Cek apakah device mendukung hover (mengabaikan mobile touch)
+            if (window.matchMedia("(any-hover: hover)").matches) {
+                document.addEventListener('mousemove', (e) => {
+                    cursor.style.left = e.clientX + 'px';
+                    cursor.style.top = e.clientY + 'px';
+                });
+
+                interactiveElements.forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        cursor.classList.add('hovering');
+                    });
+                    el.addEventListener('mouseleave', () => {
+                        cursor.classList.remove('hovering');
+                    });
+                });
+            }
+
+            // 2. Header Scroll Effect
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('shadow-sm');
+                    header.classList.replace('border-transparent', 'border-gray-100');
+                } else {
+                    header.classList.remove('shadow-sm');
+                    header.classList.replace('border-gray-100', 'border-transparent');
+                }
+            });
+
+            // 3. Scroll Reveal Animation menggunakan Intersection Observer
+            const revealElements = document.querySelectorAll('.reveal');
+            
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // Optional: stop observing once revealed
+                        // observer.unobserve(entry.target); 
+                    }
+                });
+            }, {
+                root: null,
+                threshold: 0.1, // Trigger saat 10% elemen terlihat
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            revealElements.forEach(el => {
+                revealObserver.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
